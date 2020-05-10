@@ -10,27 +10,49 @@
  * @return {void} Do not return anything, modify board in-place instead.
  */
 var solveSudoku = function(board) {
-    let lineHashMap, columnHashMap, blockHashMap
-    let lineCheck, columnCheck, blockCheck, blockX, blockY, valueX, valueY
-    lineHashMap = columnHashMap = blockHashMap = Array.from({length:10}, x=>Array.from({length:10}, y=>0))
-    for (let i = 0; i < 9; i++) {
-        blockX = parseInt(i / 3)
-        blockY = parseInt(i % 3)
-        for (let j = 0; j < 9; j++) {
-            lineCheck = board[i][j]
-            lineHashMap[parseInt(lineCheck)] = 1
+    let x = backTrack(board, 0, 0) 
+    console.log(x)
+};
 
-            columnCheck = board[j][i]
-            columnHashMap[parseInt(columnCheck)] = 1
+function backTrack(board, i, j) {
+    let row = 9, column = 9
+    if (j == column) {
+        return backTrack(board, i + 1, 0)
+    }
+    if (i == row) {
+        return true
+    }
+    if (board[i][j] !== ".") {
+        return backTrack(board, i, j + 1)
+    }
+    for (let ch = '1'; ch <= '9'; ch++) {
+        if (!isValid(board, i, j, ch)) {
+            continue
+        }
+        board[i][j] = ch.toString()
+        if (backTrack(board, i, j + 1)) {
+            return true
+        }
+        board[i][j] = "."
+    }
+    return false
+}
 
-            valueX = parseInt(j / 3)
-            valueY = parseInt(j % 3)
-            blockCheck = board[blockX*3+valueX][blockY*3+valueY]
-            blockHashMap[parseInt(blockCheck)] = 1
+function isValid(board, i, j, ch) {
+    for (let x = 0; x < 9; x++) {
+        if (board[i][x] == ch) {
+            return false
+        }
+        if (board[x][j] == ch) {
+            return false
+        }
+        if (board[parseInt(i / 3)*3 + parseInt(x / 3)][parseInt(j / 3) * 3 + parseInt(x % 3)] == ch) {
+            return false
         }
     }
-
-    
-};
+    return true
+}
+// let arr = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+// console.log(solveSudoku(arr), arr)
 // @lc code=end
 
