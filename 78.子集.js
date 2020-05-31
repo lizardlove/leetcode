@@ -1,18 +1,21 @@
 /*
- * @lc app=leetcode.cn id=77 lang=javascript
+ * @lc app=leetcode.cn id=78 lang=javascript
  *
- * [77] 组合
+ * [78] 子集
  */
 
 // @lc code=start
 /**
- * @param {number} n
- * @param {number} k
+ * @param {number[]} nums
  * @return {number[][]}
  */
-var combine = function(n, k) {
-    let x = 1, box = Array.from({length: n}, y=>x++)
-    return getCombine(box, k)
+var subsets = function(nums) {
+    let res = [[]], temp
+    for (let i = 1; i <= nums.length; i++) {
+        temp = getCombine(nums, i)
+        temp.forEach(x => res.push(x))
+    }
+    return res
 };
 function getCombine(box, k) {
     if (box.length == k) return [box]
