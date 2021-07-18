@@ -28,6 +28,7 @@ var maximalRectangle = function(matrix) {
         for (let j = 1; j < col + 2; j++) {
             while(dp[i][j] < dp[i][stack[stack.length - 1]]) {
                 height = stack.pop()
+                console.log(i, j, stack)
                 area = dp[i][height] * (j - stack[stack.length - 1] - 1)
                 res = res > area ? res : area
             }
